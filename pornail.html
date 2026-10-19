@@ -1,0 +1,549 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ពណ៌ក្រចក</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Koulen&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: a shade wall of polish colours opens the page, then supplies shop, salon price list, booking, store info.
+   Identity: the colours themselves. Everything else stays quiet. */
+:root {
+  --bg: #FBF6F6;
+  --surface: #FFFFFF;
+  --fg: #2B1722;
+  --muted: #7A6670;
+  --line: #EBDADF;
+  --accent: #B3124F;
+  --accent-fg: #FFFFFF;
+  --accent-soft: #F8E3EA;
+  --ok: #1F7A55;
+  --font-display: "Koulen", "Kantumruy Pro", "Noto Sans Khmer", sans-serif;
+  --font-body: "Kantumruy Pro", "Noto Sans Khmer", system-ui, sans-serif;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A0F15; --surface: #25161F; --fg: #F6E9EE; --muted: #B79AA6;
+    --line: #3A2530; --accent: #FF6B9D; --accent-fg: #1A0F15; --accent-soft: #3A1B29; --ok: #5ED3A0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A0F15; --surface: #25161F; --fg: #F6E9EE; --muted: #B79AA6;
+  --line: #3A2530; --accent: #FF6B9D; --accent-fg: #1A0F15; --accent-soft: #3A1B29; --ok: #5ED3A0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--bg);
+}
+h1, h2, h3, p { margin: 0; }
+h1, h2 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; letter-spacing: 0.01em; line-height: 1.25; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.placeholder { border-bottom: 1.5px dashed var(--muted); }
+
+/* header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+  background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: 16px; min-height: 60px; flex-wrap: wrap; padding-block: 6px; }
+.brand { font-family: var(--font-display); font-size: 26px; text-decoration: none; color: var(--accent); margin-right: auto; line-height: 1.2; }
+.brand small { font-family: var(--font-body); font-size: 13px; font-weight: 600; letter-spacing: .12em; color: var(--muted); margin-left: 6px; text-transform: lowercase; }
+.latin { font-family: var(--font-body); font-weight: 600; font-size: 18px; letter-spacing: .28em; color: var(--muted); margin-top: 2px; }
+.nav { display: flex; gap: 20px; }
+.nav a { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--muted); }
+.nav a:hover { color: var(--fg); }
+.tools { display: flex; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; background: var(--surface); }
+.seg button { border: 0; background: none; padding: 4px 12px; border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.cartbtn {
+  display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); background: var(--surface);
+  padding: 6px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px;
+}
+.cartbtn b { background: var(--accent); color: var(--accent-fg); min-width: 22px; height: 22px; border-radius: 11px; display: inline-grid; place-items: center; font-size: 12px; padding: 0 6px; font-variant-numeric: tabular-nums; }
+
+/* hero */
+main { display: flex; flex-direction: column; gap: 88px; padding-block: 40px 56px; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(52px, 9vw, 96px); color: var(--accent); line-height: 1.15; }
+.hero .lede { font-size: 20px; font-weight: 600; margin-top: 14px; max-width: 28ch; text-wrap: balance; }
+.hero .sub { color: var(--muted); margin-top: 12px; max-width: 46ch; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid var(--accent);
+  background: var(--accent); color: var(--accent-fg); padding: 10px 22px; border-radius: 999px; font-weight: 600; cursor: pointer; text-decoration: none;
+}
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:hover { filter: brightness(1.06); }
+.wall { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.sw { border-radius: var(--radius); aspect-ratio: 3 / 4; padding: 10px; display: flex; flex-direction: column; justify-content: flex-end; color: #fff; font-size: 11px; line-height: 1.3; font-variant-numeric: tabular-nums; position: relative; overflow: hidden; transition: transform .2s; }
+.sw:hover { transform: translateY(-4px); }
+.sw::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 38%; background: linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,0)); }
+.sw.light { color: #2B1722; }
+.sw b { font-size: 12px; letter-spacing: .03em; position: relative; }
+.sw span { position: relative; opacity: .9; }
+.wallcap { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+
+/* sections */
+.sec-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 24px; }
+.sec-head h2 { font-size: clamp(30px, 5vw, 42px); }
+.sec-head p { color: var(--muted); }
+.chip-sample { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 8px; vertical-align: middle; font-family: var(--font-body); letter-spacing: 0; }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.filters button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 16px; cursor: pointer; font-weight: 500; font-size: 14px; }
+.filters button[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+.card .art { aspect-ratio: 4 / 3; display: grid; place-items: center; }
+.card .art svg { width: 44%; height: auto; max-height: 82%; }
+.card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.card h3 { font-size: 15px; font-weight: 600; line-height: 1.45; }
+.card .meta { color: var(--muted); font-size: 13px; }
+.card .foot { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; gap: 8px; }
+.price { font-weight: 700; font-size: 18px; font-variant-numeric: tabular-nums; }
+.add { border: 1.5px solid var(--accent); background: transparent; color: var(--accent); border-radius: 999px; padding: 4px 16px; font-weight: 600; cursor: pointer; font-size: 14px; }
+.add:hover { background: var(--accent); color: var(--accent-fg); }
+
+/* services */
+.svc-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.svc-list { list-style: none; margin: 0; padding: 0; }
+.svc-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.svc-list li:first-child { border-top: 1px solid var(--line); }
+.svc-list .n { font-weight: 600; }
+.svc-list .d { color: var(--muted); font-size: 14px; grid-column: 1; }
+.svc-list .p { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; grid-row: 1; grid-column: 2; }
+
+/* booking */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+.panel h3 { font-family: var(--font-display); font-weight: 400; font-size: 26px; margin-bottom: 16px; }
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.f { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.f.full { grid-column: 1 / -1; }
+label { font-size: 13px; font-weight: 600; color: var(--muted); }
+input, select, textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; width: 100%; min-width: 0; }
+textarea { resize: vertical; min-height: 64px; }
+.result { margin-top: 18px; display: none; flex-direction: column; gap: 10px; }
+.result.on { display: flex; }
+.msg { white-space: pre-wrap; background: var(--bg); border: 1px dashed var(--muted); border-radius: 8px; padding: 12px 14px; font-size: 14px; overflow-wrap: anywhere; user-select: all; }
+.hint { color: var(--muted); font-size: 14px; }
+.err { color: var(--accent); font-size: 14px; font-weight: 600; }
+
+/* store */
+.store { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 24px; }
+.store dt { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.store dd { margin: 4px 0 0; font-weight: 500; overflow-wrap: anywhere; }
+footer { border-top: 1px solid var(--line); padding-block: 24px 40px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* cart drawer */
+.scrim { position: fixed; inset: 0; background: rgba(20,8,14,.45); z-index: 40; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100%); z-index: 50; background: var(--bg); border-left: 1px solid var(--line);
+  display: flex; flex-direction: column; padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) 20px; gap: 12px;
+}
+.drawer header { display: flex; align-items: center; justify-content: space-between; }
+.drawer h3 { font-family: var(--font-display); font-weight: 400; font-size: 26px; }
+.x { border: 0; background: none; cursor: pointer; font-size: 28px; line-height: 1; padding: 4px 8px; color: var(--muted); }
+.lines { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; min-height: 0; }
+.lines li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.dot { width: 10px; height: 40px; border-radius: 5px; }
+.ln { font-size: 14px; font-weight: 500; }
+.lm { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.qty { display: inline-flex; align-items: center; gap: 6px; }
+.qty button { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 700; }
+.qty span { min-width: 20px; text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+.tot { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.empty { color: var(--muted); padding: 24px 0; }
+
+@media (max-width: 860px) {
+  main { gap: 64px; padding-block-start: 28px; }
+  .hero, .svc-wrap { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .nav { display: none; }
+}
+@media (max-width: 520px) {
+  form { grid-template-columns: minmax(0, 1fr); }
+  .wall { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .wall .sw:nth-child(n+10) { display: none; }
+  .panel { padding: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">ពណ៌ក្រចក <small>pornail</small></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#supplies" data-i18n="nav_supplies"></a>
+      <a href="#services" data-i18n="nav_services"></a>
+      <a href="#book" data-i18n="nav_book"></a>
+      <a href="#store" data-i18n="nav_store"></a>
+    </nav>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Language">
+        <button type="button" id="lang-km" aria-pressed="true">ខ្មែរ</button>
+        <button type="button" id="lang-en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="cartbtn" id="open-cart" aria-haspopup="dialog">
+        <span data-i18n="cart"></span> <b id="cart-count">0</b>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="top">
+  <section class="hero" aria-labelledby="h1">
+    <div>
+      <h1 id="h1">ពណ៌ក្រចក</h1>
+      <p class="latin">pornail</p>
+      <p class="lede" data-i18n="lede"></p>
+      <p class="sub" data-i18n="sub"></p>
+      <div class="cta">
+        <a class="btn" href="#supplies" data-i18n="cta_shop"></a>
+        <a class="btn ghost" href="#book" data-i18n="cta_book"></a>
+      </div>
+    </div>
+    <div class="wall" id="wall" aria-label="Shade wall"></div>
+  </section>
+
+  <section id="supplies" aria-labelledby="h-sup">
+    <div class="sec-head">
+      <h2 id="h-sup"><span data-i18n="sup_title"></span><span class="chip-sample" data-i18n="sample"></span></h2>
+      <p data-i18n="sup_sub"></p>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Categories"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="services" aria-labelledby="h-svc">
+    <div class="svc-wrap">
+      <div>
+        <div class="sec-head">
+          <h2 id="h-svc" data-i18n="svc_title"></h2>
+          <p data-i18n="svc_sub"></p>
+        </div>
+        <ul class="svc-list" id="svc-list"></ul>
+      </div>
+      <div class="panel" id="book">
+        <h3 data-i18n="book_title"></h3>
+        <form id="book-form" novalidate>
+          <div class="f"><label for="b-name" data-i18n="f_name"></label><input id="b-name" autocomplete="name"></div>
+          <div class="f"><label for="b-phone" data-i18n="f_phone"></label><input id="b-phone" inputmode="tel" autocomplete="tel"></div>
+          <div class="f full"><label for="b-svc" data-i18n="f_service"></label><select id="b-svc"></select></div>
+          <div class="f"><label for="b-date" data-i18n="f_date"></label><input id="b-date" type="date"></div>
+          <div class="f"><label for="b-time" data-i18n="f_time"></label><select id="b-time"></select></div>
+          <div class="f full"><label for="b-note" data-i18n="f_note"></label><textarea id="b-note"></textarea></div>
+          <div class="f full"><p class="err" id="b-err" hidden></p><button class="btn" type="submit" data-i18n="b_make"></button></div>
+        </form>
+        <div class="result" id="b-result">
+          <p class="hint" data-i18n="b_hint"></p>
+          <div class="msg" id="b-msg"></div>
+          <button class="btn ghost" type="button" id="b-copy" data-i18n="copy"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="store" aria-labelledby="h-store">
+    <div class="sec-head"><h2 id="h-store" data-i18n="store_title"></h2></div>
+    <dl class="store">
+      <div><dt data-i18n="st_addr"></dt><dd><span class="placeholder" data-i18n="st_addr_v"></span></dd></div>
+      <div><dt data-i18n="st_hours"></dt><dd><span class="placeholder" data-i18n="st_hours_v"></span></dd></div>
+      <div><dt data-i18n="st_phone"></dt><dd><span class="placeholder">0XX XXX XXX</span></dd></div>
+      <div><dt>Telegram</dt><dd><span class="placeholder">@your_username</span></dd></div>
+    </dl>
+  </section>
+
+  <footer><span>© ពណ៌ក្រចក · pornail</span><span data-i18n="foot"></span></footer>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="cart-h" hidden>
+  <header><h3 id="cart-h" data-i18n="cart_title"></h3><button class="x" type="button" id="close-cart" aria-label="Close">×</button></header>
+  <ul class="lines" id="lines"></ul>
+  <div class="tot"><span data-i18n="total"></span><span id="total">$0.00</span></div>
+  <button class="btn" type="button" id="make-order" data-i18n="o_make"></button>
+  <div class="result" id="o-result">
+    <p class="hint" data-i18n="o_hint"></p>
+    <div class="msg" id="o-msg"></div>
+    <button class="btn ghost" type="button" id="o-copy" data-i18n="copy"></button>
+  </div>
+</aside>
+
+<script>
+(function () {
+  var T = {
+    nav_supplies: { km: "ផលិតផល", en: "Supplies" },
+    nav_services: { km: "សេវាកម្ម", en: "Salon" },
+    nav_book: { km: "កក់ម៉ោង", en: "Book" },
+    nav_store: { km: "ហាង", en: "Store" },
+    cart: { km: "កន្ត្រក", en: "Cart" },
+    lede: { km: "ផលិតផលសម្រាប់ហាងក្រចក និងហាងក្រចករបស់យើងផ្ទាល់", en: "Nail supplies for salons, and a salon of our own." },
+    sub: { km: "ជែលលាបក្រចក អាគ្រីលិក ចង្កៀង ឧបករណ៍ និងគ្រឿងតុបតែង សម្រាប់ហាង និងជាងក្រចក។ សូមអញ្ជើញមកហាងរបស់យើង ដើម្បីធ្វើក្រចកផ្ទាល់ខ្លួន។", en: "Gel polish, acrylic, lamps, tools and nail art for salons and nail artists. Visit the store to get your own nails done." },
+    cta_shop: { km: "ទិញផលិតផល", en: "Shop supplies" },
+    cta_book: { km: "កក់ម៉ោង", en: "Book a visit" },
+    wallcap: { km: "ជញ្ជាំងពណ៌ ឈ្មោះ និងកូដជាឧទាហរណ៍", en: "Shade wall. Names and codes are examples." },
+    sup_title: { km: "ផលិតផល", en: "Supplies" },
+    sample: { km: "ទំនិញគំរូ", en: "Sample stock" },
+    sup_sub: { km: "អ្វីៗគ្រប់យ៉ាងដែលហាងក្រចកត្រូវការ។", en: "Everything a nail salon runs on." },
+    svc_title: { km: "សេវាកម្មហាងក្រចក", en: "Salon services" },
+    svc_sub: { km: "អាចចូលផ្ទាល់ ឬកក់ទុកមុន។ តម្លៃជាឧទាហរណ៍។", en: "Walk in or book ahead. Prices are examples." },
+    book_title: { km: "កក់ម៉ោង", en: "Book a visit" },
+    f_name: { km: "ឈ្មោះ", en: "Name" },
+    f_phone: { km: "លេខទូរស័ព្ទ", en: "Phone" },
+    f_service: { km: "សេវា", en: "Service" },
+    f_date: { km: "ថ្ងៃ", en: "Date" },
+    f_time: { km: "ម៉ោង", en: "Time" },
+    f_note: { km: "កំណត់ចំណាំ (មិនបង្ខំ)", en: "Notes (optional)" },
+    b_make: { km: "បង្កើតសារកក់ម៉ោង", en: "Create booking message" },
+    b_hint: { km: "ចម្លងសារនេះ ហើយផ្ញើមកយើងតាម Telegram ឬទូរស័ព្ទ។ ការកក់ត្រូវបានបញ្ជាក់ នៅពេលយើងឆ្លើយតប។", en: "Copy this message and send it to us on Telegram or by phone. The booking is confirmed when we reply." },
+    err: { km: "សូមបញ្ចូលឈ្មោះ លេខទូរស័ព្ទ និងថ្ងៃ។", en: "Enter your name, phone and a date." },
+    copy: { km: "ចម្លង", en: "Copy" },
+    copied: { km: "បានចម្លង", en: "Copied" },
+    store_title: { km: "មកកាន់ហាង", en: "Visit the store" },
+    st_addr: { km: "ទីតាំង", en: "Address" },
+    st_addr_v: { km: "ដាក់ទីតាំងហាងរបស់អ្នក", en: "Add your store address" },
+    st_hours: { km: "ម៉ោងបើក", en: "Hours" },
+    st_hours_v: { km: "រាល់ថ្ងៃ ម៉ោង ៩:០០–១៩:០០", en: "Daily 09:00–19:00" },
+    st_phone: { km: "ទូរស័ព្ទ", en: "Phone" },
+    foot: { km: "លក់គ្រឿងក្រចក និងសេវាក្រចក", en: "Nail supplies and nail salon" },
+    cart_title: { km: "ការបញ្ជាទិញរបស់អ្នក", en: "Your order" },
+    total: { km: "សរុប", en: "Total" },
+    o_make: { km: "រៀបចំសារបញ្ជាទិញ", en: "Prepare order message" },
+    o_hint: { km: "ចម្លងសារនេះ ហើយផ្ញើមកយើងតាម Telegram ឬទូរស័ព្ទ ដើម្បីបញ្ជាក់ការបញ្ជាទិញ។", en: "Copy this message and send it to us on Telegram or by phone to confirm the order." },
+    empty: { km: "មិនទាន់មានអ្វីទេ។", en: "Nothing here yet." },
+    add: { km: "ដាក់ចូល", en: "Add" },
+    all: { km: "ទាំងអស់", en: "All" },
+    min: { km: "នាទី", en: "min" },
+    order_head: { km: "សួស្តី ខ្ញុំចង់បញ្ជាទិញ៖", en: "Hello, I would like to order:" },
+    book_head: { km: "សួស្តី ខ្ញុំចង់កក់ម៉ោងធ្វើក្រចក៖", en: "Hello, I would like to book a nail appointment:" }
+  };
+
+  var CATS = [
+    { id: "polish", km: "ជែលលាបក្រចក", en: "Gel polish" },
+    { id: "builder", km: "អាគ្រីលិក និងប៊ីលឌ័រជែល", en: "Acrylic & builder" },
+    { id: "lamps", km: "ចង្កៀង", en: "Lamps" },
+    { id: "tools", km: "ឧបករណ៍", en: "Tools" },
+    { id: "art", km: "តុបតែងក្រចក", en: "Nail art" },
+    { id: "tips", km: "ក្រចកបិទ", en: "Tips" },
+    { id: "care", km: "ថែទាំ និងអនាម័យ", en: "Care & hygiene" }
+  ];
+
+  var P = [
+    { id: 1, c: "polish", icon: "bottle", col: "#D9A5A8", km: "ជែលលាបក្រចក · Rose Dust", en: "Gel polish · Rose Dust", size: "15 ml", p: 4.5, code: "N-014" },
+    { id: 2, c: "polish", icon: "bottle", col: "#A3122F", km: "ជែលលាបក្រចក · Cherry Lacquer", en: "Gel polish · Cherry Lacquer", size: "15 ml", p: 4.5, code: "N-027" },
+    { id: 3, c: "polish", icon: "bottle", col: "#F1E8E2", km: "ជែលលាបក្រចក · Milk White", en: "Gel polish · Milk White", size: "15 ml", p: 4.5, code: "N-003" },
+    { id: 4, c: "polish", icon: "bottle", col: "#1F2A5C", km: "ជែលលាបក្រចក · Midnight Blue", en: "Gel polish · Midnight Blue", size: "15 ml", p: 4.5, code: "N-041" },
+    { id: 5, c: "polish", icon: "bottle", col: "#2E8B6E", km: "ជែលលាបក្រចក · Jade", en: "Gel polish · Jade", size: "15 ml", p: 4.5, code: "N-052" },
+    { id: 6, c: "polish", icon: "bottle", col: "#CFC8C4", km: "ថ្នាំគ្របលើ គ្មានស្អិត", en: "No-wipe top coat", size: "15 ml", p: 5, code: "TC-01" },
+    { id: 7, c: "polish", icon: "bottle", col: "#E8C9CF", km: "ថ្នាំរងជ័រ", en: "Rubber base coat", size: "15 ml", p: 5, code: "BC-01" },
+    { id: 8, c: "builder", icon: "jar", col: "#EADCD4", km: "ម្សៅអាគ្រីលិក ថ្លា", en: "Acrylic powder, clear", size: "30 g", p: 7, code: "AP-10" },
+    { id: 9, c: "builder", icon: "jar", col: "#F0C8D0", km: "ប៊ីលឌ័រជែល ផ្កាឈូក", en: "Builder gel, pink", size: "30 ml", p: 9.5, code: "BG-12" },
+    { id: 10, c: "builder", icon: "bottle", col: "#D8DADF", km: "ទឹកអាគ្រីលិក", en: "Acrylic liquid", size: "100 ml", p: 6, code: "AL-02" },
+    { id: 11, c: "lamps", icon: "lamp", col: "#E4CFD6", km: "ចង្កៀង UV/LED 48W", en: "UV/LED lamp 48W", size: "", p: 22, code: "LP-48" },
+    { id: 12, c: "lamps", icon: "lamp", col: "#D6D2E6", km: "ចង្កៀង LED តូច 24W", en: "Compact LED lamp 24W", size: "", p: 14, code: "LP-24" },
+    { id: 13, c: "tools", icon: "file", col: "#E7D6C4", km: "ឧបករណ៍ខាត់ក្រចក ១០ ដុំ", en: "Nail files 180/240, pack of 10", size: "", p: 3, code: "TL-05" },
+    { id: 14, c: "tools", icon: "nipper", col: "#D3DCE0", km: "ដង្កៀបសាច់ក្រចក", en: "Cuticle nipper", size: "", p: 6, code: "TL-11" },
+    { id: 15, c: "tools", icon: "drill", col: "#E0D0D8", km: "ម៉ាស៊ីនខាត់ក្រចកអគ្គិសនី", en: "Electric nail drill", size: "35,000 rpm", p: 38, code: "TL-35" },
+    { id: 16, c: "tools", icon: "brush", col: "#F1D9C7", km: "ឈុតជក់ក្រចក ៥ ដើម", en: "Nail brush set, 5 pieces", size: "", p: 7, code: "TL-20" },
+    { id: 17, c: "art", icon: "gem", col: "#DCE3F0", km: "គ្រឿងពេជ្រតុបតែងក្រចក ១២ ប្រអប់", en: "Rhinestone box, 12 grids", size: "", p: 4, code: "NA-08" },
+    { id: 18, c: "art", icon: "jar", col: "#F2DDB8", km: "ក្រដាសមាស និងម្សៅពេជ្រ", en: "Foil and glitter set", size: "", p: 5, code: "NA-14" },
+    { id: 19, c: "art", icon: "plate", col: "#D9D9E3", km: "ចានបោះពុម្ពក្រចក", en: "Stamping plate", size: "", p: 2.5, code: "NA-21" },
+    { id: 20, c: "tips", icon: "tips", col: "#F3D5D8", km: "ក្រចកបិទ ៥០០ ដុំ", en: "Press-on tips, box of 500", size: "", p: 6, code: "PT-500" },
+    { id: 21, c: "care", icon: "bottle", col: "#EBD9B0", km: "ប្រេងថែសាច់ក្រចក", en: "Cuticle oil", size: "15 ml", p: 2.5, code: "CR-04" },
+    { id: 22, c: "care", icon: "bottle", col: "#D5E6E0", km: "ទឹកលុបថ្នាំក្រចក គ្មានអាសេតូន", en: "Acetone-free remover", size: "500 ml", p: 4, code: "CR-09" },
+    { id: 23, c: "care", icon: "spray", col: "#D5E1EA", km: "ទឹកបាញ់សម្លាប់មេរោគ", en: "Sanitizer spray", size: "250 ml", p: 3, code: "CR-15" }
+  ];
+
+  var S = [
+    { km: "លាបថ្នាំធម្មតា", en: "Regular polish manicure", min: 30, p: "$4", d: { km: "កាត់ រៀបចំ និងលាបថ្នាំ។", en: "Shape, tidy and polish." } },
+    { km: "លាបជែលដៃ", en: "Gel manicure", min: 45, p: "$8", d: { km: "ជែលរយៈពេលវែង ស្ងួតក្នុងចង្កៀង។", en: "Long-wear gel, cured under the lamp." } },
+    { km: "ក្រចកជែលបន្ថែម", en: "Gel extensions", min: 75, p: "$15", d: { km: "បន្ថែមប្រវែងដោយប៊ីលឌ័រជែល។", en: "Added length with builder gel." } },
+    { km: "ក្រចកអាគ្រីលិកពេញដៃ", en: "Acrylic full set", min: 90, p: "$20", d: { km: "ឈុតពេញ ១០ ម្រាម។", en: "Full set, all ten nails." } },
+    { km: "ថែទាំជើង", en: "Pedicure", min: 50, p: "$8", d: { km: "ត្រាំ ខាត់ និងលាបថ្នាំ។", en: "Soak, file and polish." } },
+    { km: "លាបជែលជើង", en: "Gel pedicure", min: 60, p: "$12", d: { km: "ថែទាំជើង រួមទាំងជែល។", en: "Pedicure finished with gel." } },
+    { km: "តុបតែងក្រចក", en: "Nail art", min: 15, p: "from $1", d: { km: "តម្លៃក្រចកមួយ តាមគំរូ។", en: "Price per nail, depends on the design." } },
+    { km: "ដោះក្រចក", en: "Removal", min: 20, p: "$3", d: { km: "ដោះជែល ឬអាគ្រីលិកដោយសុវត្ថិភាព។", en: "Safe removal of gel or acrylic." } }
+  ];
+
+  var SHADES = [
+    ["#D9A5A8", "N-014", "Rose Dust"], ["#A3122F", "N-027", "Cherry Lacquer"], ["#F1E8E2", "N-003", "Milk White", 1],
+    ["#1F2A5C", "N-041", "Midnight Blue"], ["#2E8B6E", "N-052", "Jade"], ["#E0A458", "N-060", "Amber Honey"],
+    ["#6B2D5C", "N-066", "Plum Velvet"], ["#EF6F6C", "N-071", "Coral Pop"], ["#C9B6E4", "N-078", "Lilac Haze", 1],
+    ["#3B3B3F", "N-083", "Graphite"], ["#8C4A2F", "N-090", "Cocoa Clay"], ["#F4C7D8", "N-095", "Bubblegum", 1]
+  ];
+
+  var lang = "km", cat = "all", cart = {};
+  try { var sl = localStorage.getItem("pk-lang"); if (sl === "en" || sl === "km") lang = sl; } catch (e) {}
+  try { var sc = JSON.parse(localStorage.getItem("pk-cart") || "{}"); if (sc && typeof sc === "object") cart = sc; } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  var t = function (k) { return T[k][lang]; };
+  var money = function (n) { return "$" + n.toFixed(2); };
+  var q = function (n) { return lang === "km" ? n : n; };
+
+  function icon(kind, col) {
+    var line = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+    var ink = "#2B1722";
+    var m = {
+      bottle: '<svg viewBox="0 0 60 90" aria-hidden="true"><rect x="22" y="2" width="16" height="26" rx="3" fill="' + ink + '"/><rect x="25" y="28" width="10" height="8" fill="' + ink + '" opacity=".6"/><rect x="8" y="36" width="44" height="52" rx="12" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><rect x="15" y="44" width="6" height="30" rx="3" fill="#fff" opacity=".45"/></svg>',
+      jar: '<svg viewBox="0 0 80 80" aria-hidden="true"><rect x="10" y="12" width="60" height="18" rx="5" fill="' + ink + '"/><rect x="6" y="30" width="68" height="46" rx="12" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><rect x="14" y="38" width="6" height="28" rx="3" fill="#fff" opacity=".45"/></svg>',
+      lamp: '<svg viewBox="0 0 100 80" aria-hidden="true"><path d="M8 70 Q8 14 50 14 Q92 14 92 70 Z" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><rect x="2" y="68" width="96" height="10" rx="5" fill="' + ink + '"/><circle cx="34" cy="48" r="5" fill="#fff" opacity=".7"/><circle cx="50" cy="40" r="5" fill="#fff" opacity=".7"/><circle cx="66" cy="48" r="5" fill="#fff" opacity=".7"/></svg>',
+      file: '<svg viewBox="0 0 40 100" aria-hidden="true"><path d="M20 2 L36 22 L30 98 L10 98 L4 22 Z" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><path d="M12 40h16M12 54h16M12 68h16" stroke="' + ink + '" stroke-width="2" opacity=".5"/></svg>',
+      nipper: '<svg viewBox="0 0 80 100" aria-hidden="true"><path d="M40 44 L20 6 M40 44 L60 6" stroke="' + ink + '" stroke-width="5" stroke-linecap="round"/><circle cx="40" cy="48" r="7" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><path d="M40 55 L26 94 M40 55 L54 94" stroke="' + ink + '" stroke-width="5" stroke-linecap="round"/></svg>',
+      drill: '<svg viewBox="0 0 40 100" aria-hidden="true"><rect x="16" y="2" width="8" height="26" rx="2" fill="' + ink + '"/><rect x="6" y="28" width="28" height="68" rx="12" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><circle cx="20" cy="50" r="5" fill="' + ink + '" opacity=".55"/></svg>',
+      brush: '<svg viewBox="0 0 30 100" aria-hidden="true"><path d="M15 2 Q22 14 20 30 L10 30 Q8 14 15 2Z" fill="' + ink + '"/><rect x="9" y="30" width="12" height="10" fill="#B9AEB3"/><rect x="8" y="40" width="14" height="58" rx="7" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/></svg>',
+      gem: '<svg viewBox="0 0 80 70" aria-hidden="true"><path d="M20 4h40l18 20-38 44L2 24z" fill="' + col + '" stroke="' + ink + '" stroke-width="2" stroke-linejoin="round"/><path d="M2 24h76M26 24l14 44 14-44M20 4l6 20M60 4l-6 20" ' + line.replace("currentColor", ink) + ' opacity=".55"/></svg>',
+      plate: '<svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><circle cx="26" cy="30" r="8" fill="none" stroke="' + ink + '" stroke-width="2"/><rect x="40" y="24" width="18" height="14" rx="3" fill="none" stroke="' + ink + '" stroke-width="2"/><path d="M24 54l14 8 18-12" ' + line.replace("currentColor", ink) + '/></svg>',
+      tips: '<svg viewBox="0 0 100 80" aria-hidden="true"><g fill="' + col + '" stroke="' + ink + '" stroke-width="2"><path d="M8 70V30Q8 8 20 8t12 22v40z"/><path d="M36 74V24Q36 4 48 4t12 20v50z"/><path d="M64 70V30Q64 8 76 8t12 22v40z"/></g></svg>',
+      spray: '<svg viewBox="0 0 60 100" aria-hidden="true"><rect x="18" y="2" width="26" height="12" rx="3" fill="' + ink + '"/><rect x="40" y="6" width="16" height="6" rx="2" fill="' + ink + '"/><rect x="22" y="14" width="18" height="12" fill="' + ink + '" opacity=".6"/><rect x="8" y="26" width="44" height="72" rx="10" fill="' + col + '" stroke="' + ink + '" stroke-width="2"/><rect x="15" y="36" width="6" height="40" rx="3" fill="#fff" opacity=".45"/></svg>'
+    };
+    return m[kind] || m.bottle;
+  }
+
+  function tileBg(col) { return "color-mix(in srgb, " + col + " 24%, var(--surface))"; }
+
+  function applyText() {
+    document.documentElement.lang = lang === "km" ? "km" : "en";
+    document.querySelectorAll("[data-i18n]").forEach(function (el) { el.textContent = t(el.getAttribute("data-i18n")); });
+    $("lang-km").setAttribute("aria-pressed", String(lang === "km"));
+    $("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+  }
+
+  function renderWall() {
+    var h = SHADES.map(function (s) {
+      return '<div class="sw' + (s[3] ? " light" : "") + '" style="background:' + s[0] + '"><b>' + s[1] + '</b><span>' + s[2] + '</span></div>';
+    }).join("");
+    $("wall").innerHTML = h + '<p class="wallcap">' + t("wallcap") + '</p>';
+  }
+
+  function renderFilters() {
+    var items = [{ id: "all", km: T.all.km, en: T.all.en }].concat(CATS);
+    $("filters").innerHTML = items.map(function (c) {
+      return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (cat === c.id) + '">' + c[lang] + '</button>';
+    }).join("");
+  }
+
+  function renderGrid() {
+    var list = P.filter(function (p) { return cat === "all" || p.c === cat; });
+    $("grid").innerHTML = list.map(function (p) {
+      return '<article class="card"><div class="art" style="background:' + tileBg(p.col) + '">' + icon(p.icon, p.col) + '</div>' +
+        '<div class="body"><h3>' + p[lang] + '</h3><p class="meta">' + p.code + (p.size ? " · " + p.size : "") + '</p>' +
+        '<div class="foot"><span class="price">' + money(p.p) + '</span><button type="button" class="add" data-add="' + p.id + '">' + t("add") + '</button></div></div></article>';
+    }).join("");
+  }
+
+  function renderServices() {
+    $("svc-list").innerHTML = S.map(function (s) {
+      return '<li><span class="n">' + s[lang] + '</span><span class="p">' + s.p + '</span><span class="d">' + s.min + " " + t("min") + " · " + s.d[lang] + '</span></li>';
+    }).join("");
+    var sel = $("b-svc"), cur = sel.value;
+    sel.innerHTML = S.map(function (s, i) { return '<option value="' + i + '">' + s[lang] + " (" + s.p + ")" + '</option>'; }).join("");
+    if (cur) sel.value = cur;
+  }
+
+  function renderTimes() {
+    var sel = $("b-time");
+    if (sel.options.length) return;
+    var h = "";
+    for (var i = 9; i <= 18; i++) {
+      var a = (i < 10 ? "0" : "") + i + ":00";
+      h += '<option value="' + a + '">' + a + '</option>';
+    }
+    sel.innerHTML = h;
+  }
+
+  function cartRows() {
+    return P.filter(function (p) { return cart[p.id] > 0; }).map(function (p) { return { p: p, n: cart[p.id] }; });
+  }
+
+  function saveCart() { try { localStorage.setItem("pk-cart", JSON.stringify(cart)); } catch (e) {} }
+
+  function renderCart() {
+    var rows = cartRows(), count = 0, total = 0;
+    rows.forEach(function (r) { count += r.n; total += r.n * r.p.p; });
+    $("cart-count").textContent = count;
+    $("total").textContent = money(total);
+    $("lines").innerHTML = rows.length ? rows.map(function (r) {
+      return '<li><span class="dot" style="background:' + r.p.col + '"></span><div><div class="ln">' + r.p[lang] + '</div><div class="lm">' + money(r.p.p) + ' × ' + r.n + ' = ' + money(r.p.p * r.n) + '</div></div>' +
+        '<span class="qty"><button type="button" data-dec="' + r.p.id + '" aria-label="−">−</button><span>' + r.n + '</span><button type="button" data-inc="' + r.p.id + '" aria-label="+">+</button></span></li>';
+    }).join("") : '<li class="empty" style="display:block">' + t("empty") + '</li>';
+    $("make-order").disabled = !rows.length;
+    $("make-order").style.opacity = rows.length ? "1" : ".5";
+  }
+
+  function openCart() { $("scrim").hidden = false; $("drawer").hidden = false; $("close-cart").focus(); }
+  function closeCart() { $("scrim").hidden = true; $("drawer").hidden = true; $("o-result").classList.remove("on"); $("open-cart").focus(); }
+
+  function copyText(text, btn) {
+    var done = function () { var o = btn.textContent; btn.textContent = t("copied"); setTimeout(function () { btn.textContent = o; }, 1600); };
+    var fallback = function (el) { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(btn.previousElementSibling); });
+    } catch (e) { fallback(btn.previousElementSibling); }
+  }
+
+  function renderAll() { applyText(); renderWall(); renderFilters(); renderGrid(); renderServices(); renderCart(); }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.cat) { cat = b.dataset.cat; renderFilters(); renderGrid(); }
+    else if (b.dataset.add) { cart[b.dataset.add] = (cart[b.dataset.add] || 0) + 1; saveCart(); renderCart(); }
+    else if (b.dataset.inc) { cart[b.dataset.inc]++; saveCart(); renderCart(); $("o-result").classList.remove("on"); }
+    else if (b.dataset.dec) { cart[b.dataset.dec]--; if (cart[b.dataset.dec] <= 0) delete cart[b.dataset.dec]; saveCart(); renderCart(); $("o-result").classList.remove("on"); }
+  });
+
+  $("lang-km").addEventListener("click", function () { lang = "km"; try { localStorage.setItem("pk-lang", lang); } catch (e) {} renderAll(); });
+  $("lang-en").addEventListener("click", function () { lang = "en"; try { localStorage.setItem("pk-lang", lang); } catch (e) {} renderAll(); });
+  $("open-cart").addEventListener("click", openCart);
+  $("close-cart").addEventListener("click", closeCart);
+  $("scrim").addEventListener("click", closeCart);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("drawer").hidden) closeCart(); });
+
+  $("make-order").addEventListener("click", function () {
+    var rows = cartRows(), total = 0;
+    var lines = rows.map(function (r) { total += r.n * r.p.p; return "• " + r.p[lang] + " × " + r.n + " = " + money(r.n * r.p.p); });
+    $("o-msg").textContent = t("order_head") + "\n" + lines.join("\n") + "\n" + t("total") + ": " + money(total);
+    $("o-result").classList.add("on");
+  });
+  $("o-copy").addEventListener("click", function () { copyText($("o-msg").textContent, $("o-copy")); });
+
+  $("book-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = $("b-name").value.trim(), phone = $("b-phone").value.trim(), date = $("b-date").value;
+    if (!name || !phone || !date) { $("b-err").textContent = t("err"); $("b-err").hidden = false; return; }
+    $("b-err").hidden = true;
+    var s = S[+$("b-svc").value], note = $("b-note").value.trim();
+    var msg = t("book_head") + "\n" +
+      t("f_name") + ": " + name + "\n" + t("f_phone") + ": " + phone + "\n" +
+      t("f_service") + ": " + s[lang] + " (" + s.p + ")\n" +
+      t("f_date") + ": " + date + "  " + $("b-time").value + (note ? "\n" + t("f_note").replace(/ \(.*\)/, "") + ": " + note : "");
+    $("b-msg").textContent = msg;
+    $("b-result").classList.add("on");
+  });
+  $("b-copy").addEventListener("click", function () { copyText($("b-msg").textContent, $("b-copy")); });
+
+  var d = new Date(), pad = function (n) { return (n < 10 ? "0" : "") + n; };
+  $("b-date").min = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+
+  renderTimes();
+  renderAll();
+})();
+</script>
+
+</body></html>
